@@ -9,6 +9,7 @@ app.use(bodyParser.json());
 var worker_signup_module=require('./module/worker/account/signup');
 var worker_signin_module=require('./module/worker/account/signin');
 var captain_signup_module=require('./module/captain/account/signup');
+var captain_signin_module=require('./module/captain/account/signin');
 //worker회원가입
 app.post('/account/worker/signup',function (req,res) {
     var worker_phonenumber=req.body.worker_phonenumber;
@@ -53,7 +54,7 @@ app.post('/account/worker/signin',function (req,res) {
 
 });
 //captain 회원가입
-app.post('/account/captain/signin',function (req,res) {
+app.post('/account/captain/signup',function (req,res) {
     var captain_phonenumber=req.body.captain_phonenumber;
     var first_name=req.body.first_name;
     var last_name=req.body.last_name;
@@ -75,7 +76,26 @@ app.post('/account/captain/signin',function (req,res) {
         }
     });
 });
-
+//captain 회원가입
+app.post('/account/captain/signin',function (req,res) {
+    var captain_phonenumber=req.body.captain_phonenumber;
+    var password=req.body.password;
+    console.log('로그인:'+captain_phonenumber+" "+password);
+    captain_signin_module.signin(captain_phonenumber,password,function (err,result,row) {
+        console.log('result:'+result);
+        if(err){
+            console.log(err);
+            res.status(400);
+        }
+        if(result=='good'){
+            res.status(201).send(row);
+        }
+        else if(result=='not'){
+            res.status(404);
+            res.end("not");
+        }
+    });
+});
 
 app.listen(app.get('port'), function () {
     console.log('Create Server, Port is '+app.get('port'));

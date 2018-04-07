@@ -3,9 +3,9 @@ var mysql=require('mysql');
 var sql=require('../.././db.js');
 var conn=mysql.createConnection(sql);
 conn.connect();
-exports.signin=function (worker_phonenumber,password,callback) {
+exports.signin=function (captain_phonenumber,password,callback) {
     console.log("signin start");
-    conn.query('select worker_phonenumber from worker where worker_phonenumber=? and password=? ',[worker_phonenumber,password],function (err,row) {
+    conn.query('select captain_phonenumber from captain where captain_phonenumber=? and password=? ',[captain_phonenumber,password],function (err,row) {
         if(err){
             console.log(err);
             callback(err,null,null);
