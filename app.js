@@ -13,7 +13,7 @@ app.post('/account/worker/signup',function (req,res) {
     var last_name=req.body.last_name;
     var name=first_name+last_name;
     var password=req.body.password;
-    console.log("회원가입:"+worker_phonenumber+" "+name+""+password);
+    console.log("회원가입:"+worker_phonenumber+" "+name+" "+password);
     signup_module.signin(worker_phonenumber,name,password,function (err,result) {
         if(err){
             console.log(err);
