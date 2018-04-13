@@ -10,11 +10,12 @@ var worker_signup_module=require('./module/worker/account/signup');
 var worker_signin_module=require('./module/worker/account/signin');
 var captain_signup_module=require('./module/captain/account/signup');
 var captain_signin_module=require('./module/captain/account/signin');
+//var inputworkspace=require('./workspace/inputworkspcace');
 //worker회원가입
 app.post('/account/worker/signup',function (req,res) {
-    var worker_phonenumber=req.body.worker_phonenumber;
-    var first_name=req.body.first_name;
-    var last_name=req.body.last_name;
+    var worker_phonenumber=req.body.work_phonenumber;
+    var first_name=req.body.firstname;
+    var last_name=req.body.lastname;
     var name=first_name+last_name;
     var password=req.body.password;
     console.log("회원가입:"+worker_phonenumber+" "+name+" "+password);
@@ -22,19 +23,26 @@ app.post('/account/worker/signup',function (req,res) {
         if(err){
             console.log(err);
             res.send(400);
+            res.end();
+
         }
         if(result=='good'){
+            console.log("성공");
             res.status(201);
+            res.end();
+
         }
         else if(result==null){
             res.status(404);
-            console.log("회원가입 실패")
+            console.log("회원가입 실패");
+            res.end();
+
         }
     });
 });
 //worker로그인
 app.post('/account/worker/signin',function (req,res) {
-    var worker_phonenumber=req.body.worker_phonenumber;
+    var worker_phonenumber=req.body.work_phonenumber;
     var password=req.body.password;
     console.log("로그인:"+worker_phonenumber+" "+password);
     worker_signin_module.signin(worker_phonenumber,password,function (err,result,row) {
@@ -42,9 +50,13 @@ app.post('/account/worker/signin',function (req,res) {
         if(err){
             console.log(err);
             res.status(400);
+            res.end();
+
         }
         if(result=='good'){
             res.status(201).send(row);
+            res.end();
+
         }
         else if(result=='not'){
             res.status(404);
@@ -56,8 +68,8 @@ app.post('/account/worker/signin',function (req,res) {
 //captain 회원가입
 app.post('/account/captain/signup',function (req,res) {
     var captain_phonenumber=req.body.captain_phonenumber;
-    var first_name=req.body.first_name;
-    var last_name=req.body.last_name;
+    var first_name=req.body.firstname;
+    var last_name=req.body.lastname;
     var name=first_name+last_name;
     var password=req.body.password;
     console.log("회원가입:"+captain_phonenumber+" "+name+" "+password);
@@ -65,13 +77,18 @@ app.post('/account/captain/signup',function (req,res) {
         if(err){
             console.log(err);
             res.send(400);
+            res.end();
+
         }
         if(result=='good'){
             res.status(201).end('성공');
+            res.end();
+
         }
         else if(result==null){
             res.status(404).end('실패');
-            
+            res.end();
+
             console.log("회원가입 실패")
         }
     });
@@ -86,17 +103,27 @@ app.post('/account/captain/signin',function (req,res) {
         if(err){
             console.log(err);
             res.status(400);
+            res.end();
+
         }
         if(result=='good'){
             res.status(201).send(row);
+            res.end();
+
         }
         else if(result=='not'){
             res.status(404);
             res.end("not");
+            res.end();
+
         }
     });
 });
+/*app.post('/work/captain/inputworkspace',function (req,res) {
+    var work_id=req.body.workid;
+    var workadress=req.body.workadress;
 
+})*/
 app.listen(app.get('port'), function () {
     console.log('Create Server, Port is '+app.get('port'));
 

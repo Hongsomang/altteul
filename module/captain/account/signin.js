@@ -15,9 +15,7 @@ exports.signin=function (captain_phonenumber,password,callback) {
             callback(null,"good",row);
             return ;
         }
-        else {
-            callback(null,"not",null);
-            return;
-        }
+
+
     });
 }

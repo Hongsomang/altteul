@@ -11,11 +11,12 @@ exports.signup=function (work_phonenumber,name,password,callback) {
             callback(err,null);
             return;
         }
-        else {
-            console.log("signin:"+row);
+        if(row.length=1) {
+            console.log("signup:"+row);
             callback(null,"good");
             return;
         }
+
     });
 
 
