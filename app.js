@@ -10,7 +10,8 @@ var worker_signup_module=require('./module/worker/account/signup');
 var worker_signin_module=require('./module/worker/account/signin');
 var captain_signup_module=require('./module/captain/account/signup');
 var captain_signin_module=require('./module/captain/account/signin');
-//var inputworkspace=require('./workspace/inputworkspcace');
+var captain_inputworkspace_module=require('./module/captain/workspace/inputworkspace');
+var
 //worker회원가입
 app.post('/account/worker/signup',function (req,res) {
     var worker_phonenumber=req.body.work_phonenumber;
@@ -114,16 +115,34 @@ app.post('/account/captain/signin',function (req,res) {
         else if(result=='not'){
             res.status(404);
             res.end("not");
-            res.end();
 
         }
     });
 });
-/*app.post('/work/captain/inputworkspace',function (req,res) {
+app.post('/work/captain/inputworkspace',function (req,res) {
     var work_id=req.body.workid;
-    var workadress=req.body.workadress;
+    var workaddress=req.body.workaddress;
+    var captain_phonenumber=req.body.captain_phonenumber;
+    console.log("사업장 입력:"+work_id+" "+workaddress+" "+captain_phonenumber);
+    capt1ain_inputworkspace_module.inputworkspace(work_id,workaddress,captain_phonenumber,function (err,result) {
+        console.log("result:"+result);
+        if(err){
+            console.log(err);
+            res.status(400);
+            res.end();
+        }
+        if(result=='good'){
+            res.status(201);
+            res.end("성공");
+        }
+        if(result==null){
+            res.status(404);
+            res.end("실패");
+        }
 
-})*/
+    });
+
+});
 app.listen(app.get('port'), function () {
     console.log('Create Server, Port is '+app.get('port'));
 
