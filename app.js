@@ -217,11 +217,14 @@ app.post('/work/worker/inputworkspace_list',function (req,res) {
     });
 
 });
-app.post('work/worker/start',function (req,res) {
+app.post('/work/worker/start',function (req,res) {
     console.log("성공");
-
+    var start_time=new Date();
+    console.log(start_time);
+    res.send('good');
+    res.end();
 });
-app.listen(app.get('port'), function () {
+app.listen(app.get('port'), function (req,res) {
     console.log('Create Server, Port is '+app.get('port'));
 
 });
