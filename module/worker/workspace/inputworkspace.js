@@ -12,10 +12,13 @@ exports.inputworkspace=function (start_work_save,finish_work_save,day_save,works
            callback(err,null);
            return;
        }
-       if(row.length>0){
+       if(row!=null){
            console.log("성공"+row);
            callback(null,'good');
            return;
+       }
+       else{
+           console.log("gkgkgkkgkgk")
        }
     });
 }

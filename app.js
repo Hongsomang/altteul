@@ -2,6 +2,7 @@ var express=require('express');
 var app=express();
 var http=require('http');
 var bodyParser=require('body-parser');
+var websoket=require('ws').Server;
 app.set('port',process.env.PORT||2018);
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -12,6 +13,8 @@ var captain_signup_module=require('./module/captain/account/signup');
 var captain_signin_module=require('./module/captain/account/signin');
 var captain_inputworkspace_module=require('./module/captain/workspace/inputworkspace');
 var worker_inputworkspace_module=require('./module/worker/workspace/inputworkspace');
+var workspace_search_module=require('./module/worker/workspace/workspace_search');
+var inputworkspace_list_module=require('./module/worker/workspace/inputworkspace_list');
 //worker회원가입
 app.post('/account/worker/signup',function (req,res) {
     var worker_phonenumber=req.body.work_phonenumber;
@@ -119,6 +122,7 @@ app.post('/account/captain/signin',function (req,res) {
         }
     });
 });
+//사장 가게 추가
 app.post('/work/captain/inputworkspace',function (req,res) {
     var work_id=req.body.workid;
     var workaddress=req.body.workaddress;
@@ -143,6 +147,7 @@ app.post('/work/captain/inputworkspace',function (req,res) {
     });
 
 });
+//알바 근무지 추가
 app.post('/work/worker/inputworkspace',function (req,res) {
     var start_work_save=req.body.starkwork;
     var finsish_work_save=req.body.finishwork;
@@ -165,6 +170,48 @@ app.post('/work/worker/inputworkspace',function (req,res) {
             res.status(404);
             res.end('실패');
         }
+    });
+
+
+});
+//근무지 검색
+app.post('/work/worker/workspace_search',function (req,res) {
+    var work_id=req.body.workid;
+    console.log('workspace_search:'+work_id);
+    workspace_search_module.search_workspace(work_id,function (err,result) {
+        console.log("result:"+result);
+        if(err){
+            console.log(err);
+            res.status(400);
+        }
+        if(result=='good'){
+            res.status(201);
+            res.end('성공');
+        }
+        else if(result==null){
+            res.status(404);
+            res.end('실패, 없는 가게');
+        }
+
+    });
+});
+app.post('/work/worker/inputworkspace_list',function (req,res) {
+    var worker_phonenumber=req.body.work_phonenumber;
+    console.log('inputworkspace_list:'+worker_phonenumber);
+    inputworkspace_list_module.list(worker_phonenumber,function (err,result,rows) {
+       console.log('result:'+result);
+       if(err){
+           console.log(err);
+           res.status(400);
+       }
+       if(result=='good'){
+           res.status(201).send(rows);
+           res.end(rows);
+       }
+       else if(result==null){
+           res.status(200);
+           res.end('없음');
+       }
     });
 
 })
