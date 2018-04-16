@@ -148,7 +148,7 @@ app.post('/work/captain/inputworkspace',function (req,res) {
 
 });
 //알바 근무지 추가
-app.post('/work/worker/inputworkspace',function (req,res) {
+    app.post('/work/worker/inputworkspace',function (req,res) {
     var start_work_save=req.body.starkwork;
     var finsish_work_save=req.body.finishwork;
     var  workspace_work_id=req.body.workid;
@@ -196,17 +196,19 @@ app.post('/work/worker/workspace_search',function (req,res) {
     });
 });
 app.post('/work/worker/inputworkspace_list',function (req,res) {
-    var worker_phonenumber=req.body.work_phonenumber;
-    console.log('inputworkspace_list:'+worker_phonenumber);
-    inputworkspace_list_module.list(worker_phonenumber,function (err,result,rows) {
+    var workspace_work_id=req.body.work_phonenumber;
+    console.log('inputworkspace_list:'+workspace_work_id);
+    inputworkspace_list_module.list(workspace_work_id,function (err,result,rows) {
        console.log('result:'+result);
        if(err){
            console.log(err);
            res.status(400);
        }
        if(result=='good'){
-           res.status(201).send(rows);
-           res.end(rows);
+           res.status(201).send({
+               inputworkspace_list:rows
+           });
+           res.end();
        }
        else if(result==null){
            res.status(200);
@@ -214,7 +216,11 @@ app.post('/work/worker/inputworkspace_list',function (req,res) {
        }
     });
 
-})
+});
+app.post('work/worker/start',function (req,res) {
+    console.log("성공");
+
+});
 app.listen(app.get('port'), function () {
     console.log('Create Server, Port is '+app.get('port'));
 
