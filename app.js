@@ -195,6 +195,7 @@ app.post('/work/worker/workspace_search',function (req,res) {
 
     });
 });
+//내 근무지
 app.post('/work/worker/inputworkspace_list',function (req,res) {
     var workspace_work_id=req.body.work_phonenumber;
     console.log('inputworkspace_list:'+workspace_work_id);
@@ -217,6 +218,7 @@ app.post('/work/worker/inputworkspace_list',function (req,res) {
     });
 
 });
+//라즈베리파이 연결
 app.post('/work/worker/start',function (req,res) {
     console.log("성공");
     var start_time=new Date();
